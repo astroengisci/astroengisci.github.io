@@ -1,64 +1,48 @@
 # -*- coding: utf-8 -*-
 # PyConlangWordGen v1.1.3
+
 import sys
 import random
 import re
-from browser import document, alert
+import time
+from browser import document, html
 
-def test(ev):
-    alert(document["zone"].value)
-
-document['mybutton'].bind('click',echo)
-
-sections = ['-CATEGORIES', '-REWRITE', '-SYLLABLES', '-ILLEGAL',
-            '-ILLEGALEXCEPTIONS', '-PARAMS', '']
-paramlist = ['minsylls', 'maxsylls', 'showrejected', 'show_pre_rewrite',
-            'show_rewrite_trigger', 'filter_duplicates', 'never_generate_file']
-categories = {}
-syllables = []
-illegal = []
-rewritekeys = []  # Normally you'd just store these as a dictionary. However, we want the program to run
-rewritevalues = []  # these rules in the order the user defines them. Iterating through a dictionary doesn't always do that.
-exceptions = []
-# Parameters
-minsyllables = 1
-maxsyllables = 3
-showrejected = False
-show_pre_rewrite = False
-show_rewrite_trigger = False
-
-filter_duplicates = True
-already_generated = []
-never_generate_file = ""
-
+if document['rules'].value.strip() == "":
+    fake_qs = '?foo=%s' %time.time()
+    document['rules'].value = open('scripts/samplelanguage.txt'+fake_qs).read()
 
 def run():
-    # Check that arguments are correct
-    if len(sys.argv) < 3 or len(sys.argv) > 3:
-        print("Invalid arguments.")
-        print("syntax: python pywordgen.py [RULESFILE] [NUMWORDS]")
-        sys.exit()
 
-    # Check that our arguments are typed correctly
-    try:
-        rules = sys.argv[1]
-        numwords = int(sys.argv[2])
-    except ValueError:
-        print("Invalid arguments")
-        print("syntax: python pywordgen.py [RULESFILE] [NUMWORDS]")
-        sys.exit()
+    sections = ['-CATEGORIES', '-REWRITE', '-SYLLABLES', '-ILLEGAL',
+                '-ILLEGALEXCEPTIONS', '-PARAMS', '']
+    paramlist = ['minsylls', 'maxsylls', 'showrejected', 'show_pre_rewrite',
+                'show_rewrite_trigger', 'filter_duplicates', 'never_generate_file']
+    categories = {}
+    syllables = []
+    illegal = []
+    rewritekeys = []  # Normally you'd just store these as a dictionary. However, we want the program to run
+    rewritevalues = []  # these rules in the order the user defines them. Iterating through a dictionary doesn't always do that.
+    exceptions = []
+    # Parameters
+    minsyllables = 1
+    maxsyllables = 3
+    showrejected = False
+    show_pre_rewrite = False
+    show_rewrite_trigger = False
 
-    # Ensure that the rules file actually exists
-    try:
-        f = open(rules)
-        rules = None  # I want to keep using the rules variable
-        rules = [x.strip() for x in f.read().split("\n") if x != '']
-        f.close()
-    except OSError:
-        print("Rules file could not be found.")
-        print("syntax: python pywordgen.py [RULESFILE] [NUMWORDS]")
+    filter_duplicates = True
+    already_generated = []
+    never_generate_file = ""
 
+    # Clear output box
+    document['output'].text = ''
+    #Ensure that rules box is not empty
+    if not document['rules'].value.strip():
+        document['output'] <= "You haven't specified any rules!\n"
+        document['output'] <= "Specify some rules and try again."
+        return False
 
+    rules = [x.strip() for x in document['rules'].value.split('\n')]
     #Recursively returns a list of clusters that fit the rule
     def generate_clusters(rule):
         if len(rule) > 1:
@@ -90,15 +74,15 @@ def run():
             cat = cat.strip()
             included = included.strip().replace(' ', '')
             if len(cat) > 1:
-                print("Your category names must be only one character long.")
-                print(cat + " is invalid.")
+                document['output'] <= "Your category names must be only one character long." + html.BR()
+                document['output'] <= cat + " is invalid." + html.BR()
                 sys.exit()
             if len(included) < 1:
-                print("You must include some phonemes in category " + cat)
+                document['output'] <= "You must include some phonemes in category " + cat + html.BR()
                 sys.exit()
             categories[cat] = [char for char in included]
     except ValueError:
-        print("You must specify some categories.")
+        document['output'] <= "You must specify some categories." + html.BR()
         sys.exit()
 
     # Set up syllable types
@@ -108,7 +92,7 @@ def run():
                 break
             syllables.append(rules[i].strip())
     except ValueError:
-        print("You must specify some syllable types.")
+        document['output'] <= "You must specify some syllable types." + html.BR()
         sys.exit()
 
     # Set up illegal clusters
@@ -117,8 +101,8 @@ def run():
             if rules[i].strip() in sections:
                 break
             if len(rules[i].strip()) < 2:
-                print("Error with illegal cluster: " + rules[i])
-                print("Illegal clusters must be longer than a single category.")
+                document['output'] <= "Error with illegal cluster: " + rules[i] + html.BR()
+                document['output'] <= "Illegal clusters must be longer than a single category." + html.BR()
                 sys.exit()
 
             # Recursively returns a regex that fits the rule
@@ -142,8 +126,8 @@ def run():
 
             illegal.append("(?=(" + generate_regex(rules[i].strip()) + "))")
     except ValueError:
-        print("Warning: No illegal clusters specified.")
-        print("You don't have to specify any, but most languages do.")
+        document['output'] <= "Warning: No illegal clusters specified." +  html.BR()
+        document['output'] <= "You don't have to specify any, but most languages do." + html.BR() + html.BR()
 
     # Create a list of exceptionss
     try:
@@ -163,7 +147,7 @@ def run():
             inp = inp.strip()
             outp = outp.strip()
             if len(inp) < 1:
-                print("Invalid rewrite rule: " + rules[i])
+                document['output'] <= "Invalid rewrite rule: " + rules[i] + html.BR()
                 sys.exit()
             for repl in generate_clusters(inp):
                 rewritekeys.append(repl)
@@ -178,17 +162,17 @@ def run():
                 break
             param = rules[i].split("=")
             if param[0].strip() not in paramlist:
-                print(param[0] + " is not a valid parameter. Make sure  you have spelled the parameter name correctly.")
+                document['output'] <= param[0] + " is not a valid parameter. Make sure  you have spelled the parameter name correctly." + html.BR()
             elif param[0].strip() == 'minsylls':
                 try:
                     minSyllables = int(param[1])
                 except ValueError:
-                    print(rules[i] + " is an invalid parameter declaration. Using default value of minsylls: " + str(minSyllables))
+                    document['output'] <= rules[i] + " is an invalid parameter declaration. Using default value of minsylls: " + str(minSyllables) + html.BR()
             elif param[0].strip() == 'maxsylls':
                 try:
                     maxSyllables = int(param[1])
                 except ValueError:
-                    print(rules[i] + " is an invalid parameter declaration. Using default value of minsylls: " + str(maxSyllables))
+                    document['output'] <= rules[i] + " is an invalid parameter declaration. Using default value of minsylls: " + str(maxSyllables) + html.BR()
             elif param[0].strip() == 'showrejected':
                 showrejected = True if param[1].strip() == 'True' else False
             elif param[0].strip() == 'show_pre_rewrite':
@@ -209,8 +193,8 @@ def run():
             ng = f.read().split('\n')
             already_generated += ng
         except OSError:
-            print("Could not find never-generate file at \"" + never_generate_file + "\"")
-            print("Please make sure the path is correct before trying again.")
+            document['output'] <= "Could not find never-generate file at \"" + never_generate_file + "\"" + html.BR()
+            document['output'] <= "Please make sure the path is correct before trying again." + html.BR()
             sys.exit()
 
     def generatesyllable(index, size):
@@ -233,20 +217,22 @@ def run():
     def check_illegal(word):
         if word == "#%":
             return True
+        if illegal == []:
+            return False
         if filter_duplicates and word[1:-1] in already_generated:
             if showrejected:
-                print(word[1:-1] + " rejected because it's a duplicate.")
+                document['output'] <= word[1:-1] + " rejected because it's a duplicate." + html.BR()
             return True
         if never_generate_file:
             if word[1:-1] in already_generated:
                 if showrejected:
-                    print(word[1:-1] + " rejected for being a duplicate")
+                    document['output'] <= word[1:-1] + " rejected for being a duplicate" + html.BR()
                 return True
             # This is so it works whether the word is specified in phoneme symbols
             # or in the conlang's final orthography.
             elif rewrite_word(word).replace('#', '').replace('%', '') in already_generated:
                 if showrejected:
-                    print(word[1:-1] + " rejected for being a duplicate")
+                    document['output'] <= word[1:-1] + " rejected for being a duplicate" + html.BR()
                 return True
         # So, this is an unreadable monster, isn't it?
         # This bit of code first applies each illegality rule (a regex) to the word.
@@ -289,22 +275,24 @@ def run():
                             break
                     if not handled:
                         if showrejected:
-                                print(word[1:-1] + " rejected due to rule " + ill)
+                                document['output'] <= word[1:-1] + " rejected due to rule " + ill + html.BR()
                         return True
         return False
 
 
     def rewrite_word(word):
+        if rewritekeys == []:
+            return word
         for inp, outp in zip(rewritekeys, rewritevalues):
             if inp in word:
                 if show_rewrite_trigger:
-                    print("Replacing " + inp + " in " + word + " with " + outp)
+                    document['output'] <= "Replacing " + inp + " in " + word + " with " + outp + html.BR()
                 word = word.replace(inp, outp)
         return word
 
 
     # Actually generate words
-    for n in range(0, numwords):
+    for n in range(0, 20):
         word = ""
         while check_illegal("#" + word + "%"):
             word = ""
@@ -312,12 +300,15 @@ def run():
             for s in range(0, size + 1):
                 word = word + generatesyllable(s, size - 1)
         if show_pre_rewrite:
-            print("Pre-Rewrite: " + word)
+            document['output'] <= "Pre-Rewrite: " + word + html.BR()
         # Note: # and % must be added to the word in order to allow the user to
         # specify rewrite rules including the beginning and end of the word.
         # The final two .replace() statements are the only safe way to remove
         # these characters from the output, since the rewrite rule results in
         # # and % being removed from the string. Thus, taking word[1:-1] doesn't
         # work here, even if it's cleaner.
-        print(rewrite_word("#" + word + "%").replace('#', '').replace('%', ''))
+        document['output'] <= rewrite_word("#" + word + "%").replace('#', '').replace('%', '') + html.BR()
         if filter_duplicates: already_generated.append(word)
+
+#This just sets up stuff so the user can input.
+document['generate'].bind('click', run)

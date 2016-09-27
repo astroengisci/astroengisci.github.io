@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <script src="/scripts/brython.js"></script>
+    <script src="scripts/brython.js"></script>
     </head>
     <body onload="brython()">
-        This is where the web version of PyConlangWordGen will go.
+        <script type="text/python" src="scripts/pyconlangwordgen_web.py"></script>
+        <h1>PyConlangWordGen--Web Version</h1>
+        <textarea id="rules" rows="20" cols="25"></textarea><br>
+        <button id="generate">Generate!</button>
+        <p id='output'></p>
     </body>
 </html>
