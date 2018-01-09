@@ -4,6 +4,10 @@
     padding: 0;
 }
 
+:root {
+    --textcolor: ivory;
+}
+
 div {
     padding-bottom: 40px;
 }
@@ -28,21 +32,21 @@ div {
     text-align: center;
     font-size: 32pt;
     font-family: "Cinzel";
-    color: ivory;
+    color: var(--textcolor);
     padding: 10px;
     width: 25%;
     text-decoration: none;
 }
 
 .header a:hover {
-    color: paleturquoise;
+    padding-bottom: 40px
 }
 
 h1 {
     padding-top: 100px;
     text-align: center;
     width: 100%;
-    color: floralwhite;
+    color: var(--textcolor);
 }
 
 p {
@@ -51,19 +55,19 @@ p {
     margin-right: auto;
     width: 650px;
     font-size: 14pt;
-    color: floralwhite;
+    color: var(--textcolor);
 }
 
 .nature {
-    background-color: green;
-}
-
-.world {
     background-color: royalblue;
 }
 
+.world {
+    background-color: sandybrown;
+}
+
 .problem {
-    background-color: crimson;
+    background-color: indigo;
 }
 
 .end {
