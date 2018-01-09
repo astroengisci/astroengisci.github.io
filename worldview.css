@@ -8,30 +8,41 @@ div {
     padding-bottom: 40px;
 }
 
-header {
+.header {
     position: fixed;
     width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     text-align: justify;
     z-index: 10;
 }
 
-header:after {
+.header:after {
     content: '';
     display: inline-block;
     width: 100%;
 }
 
-header a {
+.header a {
     display: inline-block;
     text-align: center;
+    font-size: 32pt;
+    font-family: "Cinzel";
+    color: ivory;
     padding: 10px;
     width: 25%;
+    text-decoration: none;
+}
+
+.header a:hover {
+    color: paleturquoise;
 }
 
 h1 {
-    padding-top: 50px;
+    padding-top: 100px;
     text-align: center;
     width: 100%;
+    color: floralwhite;
 }
 
 p {
@@ -40,6 +51,8 @@ p {
     margin-right: auto;
     opacity: 0.75;
     width: 650px;
+    font-size: 14pt;
+    color: floralwhite;
 }
 
 .nature {
@@ -47,11 +60,11 @@ p {
 }
 
 .world {
-    background-color: blue;
+    background-color: royalblue;
 }
 
 .problem {
-    background-color: red;
+    background-color: crimson;
 }
 
 .end {
