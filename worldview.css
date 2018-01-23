@@ -6,6 +6,7 @@
 
 :root {
     --textcolor: ivory;
+    --textfont: "Cardo";
 }
 
 div {
@@ -13,16 +14,14 @@ div {
 }
 
 footer {
-    background-image: url("http://www.publicdomainpictures.net/pictures/170000/velka/space-view-of-earth-lights.jpg");
-    background-position: center;
+    background: linear-gradient(to bottom right, midnightblue, darkslateblue);
     padding: 75px;
 }
 
 footer a {
     text-decoration: none;
-    background-color: midnightblue;
+    background-color: lightseagreen;
     color: ghostwhite;
-    opacity: 0.90;
     padding: 10px;
     font-size: 20pt;
     font-family: "Ranga";
@@ -37,8 +36,6 @@ footer a:hover {
 .header {
     position: fixed;
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
     text-align: justify;
     z-index: 10;
 }
@@ -61,34 +58,42 @@ footer a:hover {
 }
 
 .header a:hover {
-    padding-bottom: 40px;
+    text-align: left;
 }
 
 h1 {
     padding-top: 100px;
+    font-family: var(--textfont);
+    font-weight: normal;
     text-align: center;
-    width: 100%;
     color: var(--textcolor);
 }
 
 h2 {
     padding-top: 25px;
+    font-weight: normal;
+    font-family: var(--textfont);
     text-align: center;
-    width: 100%;
     color: var(--textcolor);
 }
 
 p {
     font-size: 14pt;
+    font-family: var(--textfont);
     color: var(--textcolor);
     padding: 10px;
 }
 
 .question {
+    padding: 0px;
     border: 3px solid ghostwhite;
-    width: 650px;
+    max-width: 650px;
     margin: 40px auto;
     border-radius: 10px;
+}
+
+.question a {
+    color: var(--textcolor);
 }
 
 .nature {
