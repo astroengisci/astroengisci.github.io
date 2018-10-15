@@ -15,5 +15,6 @@ publicly.
   * Email: andrew@andrewkhill.com
   
 # Projects
-  * [PyConlangWordGen](http://github.com/astroengisci/pyconlangwordgen) 
+  * Neoglot ([Github](http://github.com/astroengisci/neoglot)) 
+    ([Docs](http://andrewkhill.com/neoglot))
   * Babylon (work-in-progress album)
