@@ -17,7 +17,7 @@ title: Sphinx Tutorial for OBU CS Club
      default values for all except:
      - `autodoc` should be included (select `y`)
      - `viewcode` should be included (select `y`)
-  3. Run `make html` or, on Windows, `make.bat`
+  3. Run `make html` or, on Windows, `./make.bat html`
   4. Edit `conf.py` to change the source path to the folder containing
      your project's actual code (`..` in this case)
   5. Make a new folder `ref` in `docs`
