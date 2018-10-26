@@ -5,8 +5,8 @@ title: Sphinx Tutorial for OBU CS Club
 # Setup Tasks
 
   1. Download `astroengisci/csclub-sphinx-demo` from GitHub
-  2. Install the Sphinx package in Python according to the installation
-     tutorial.
+  2. Install the Sphinx package in Python according to the [installation
+     tutorial](http://www.sphinx-doc.org/en/master/usage/installation.html).
   3. You're going to be using the terminal/command prompt in this 
      presentation. ***STAY CALM, EVERYTHING WILL BE ALRIGHT***
      
