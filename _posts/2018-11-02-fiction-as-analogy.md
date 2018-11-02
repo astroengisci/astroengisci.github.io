@@ -48,7 +48,10 @@ important ways.
 A fictional character is not conscious the same way a human is. So we may argue
 that J.K. Rowling writing that Harry Potter is tortured by Umbridge is not
 immoral, since Harry is not conscious. But God allowing a human to be tortured
-*is* immoral, since we are conscious.
+*is* immoral, since we are conscious. And here we have reached a contradiction.
+Morality is part of God's character, so he can't act immorally. So we have to
+assume there is something, beyond our understanding, which prevents God's
+sovereign allowance of evil from being immoral.
 
 ## The incarnation
 The author cannot become a character in his story. If I wrote myself into a
